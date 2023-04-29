@@ -63,7 +63,6 @@ def test_get_book(api_client, book_factory):
 @pytest.mark.django_db
 def test_update_book(api_client, authenticated_user, book_factory, author_factory):
     for book in book_factory:
-        # update the book with new data
         new_author = AuthorSerializer(author_factory).data
         new_data = {
             'title': 'New Book Title',
@@ -74,7 +73,6 @@ def test_update_book(api_client, authenticated_user, book_factory, author_factor
         url = reverse('book_detail', kwargs={'pk': book.id})
         response = api_client.put(url, data=new_data, format='json')
 
-        # check if the response is successful and contains updated data
         assert response.status_code == 200
         assert response.data['title'] == new_data['title']
         assert response.data.get('author').get('first_name') == new_author.get('first_name')
